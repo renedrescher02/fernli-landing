@@ -1262,62 +1262,6 @@
       max-width: 440px;
     }
 
-    .progress-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      width: 100%;
-      max-width: 440px;
-      animation: fadeUp 0.5s 0.48s ease both;
-    }
-    .progress-track {
-      width: 100%;
-      height: 8px;
-      background: rgba(255, 255, 255, 0.07);
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative;
-    }
-    .progress-fill {
-      height: 100%;
-      border-radius: 10px;
-      background: linear-gradient(90deg, var(--green), var(--lime));
-      transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-      position: relative;
-    }
-    .progress-fill::after {
-      content: "";
-      position: absolute;
-      right: -1px;
-      top: -2px;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--lime);
-      box-shadow: 0 0 8px rgba(168, 224, 99, 0.7);
-      animation: pulse 2s infinite;
-    }
-    .progress-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.75rem;
-      font-weight: 800;
-    }
-    .progress-count { color: var(--white); }
-    .progress-count strong {
-      color: var(--lime);
-      font-family: "Fraunces", serif;
-      font-size: 0.9rem;
-    }
-    .progress-goal { color: var(--muted); }
-    .progress-note {
-      font-size: 0.72rem;
-      color: var(--muted);
-      font-weight: 700;
-      text-align: center;
-    }
-    .progress-note strong { color: var(--lime); }
 
     footer {
       border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -2075,19 +2019,7 @@
             <button type="submit">Join the Waitlist →</button>
           </form>
           <div id="ctaOk" class="success-msg" role="status" aria-live="polite">🎉 You’re in — we’ll be in touch!</div>
-        </div>
-
-        <div class="progress-wrap" aria-label="Waitlist progress toward 1000">
-          <div class="progress-track">
-            <div class="progress-fill" id="progressFill" style="width:84.7%"></div>
-          </div>
-          <div class="progress-meta">
-            <span class="progress-count"><strong id="ccount">847</strong> plant lovers joined</span>
-            <span class="progress-goal">Goal: 1,000 🎯</span>
-          </div>
-          <p class="progress-note" id="progressNote">
-            <strong id="spotsLeft">153</strong> spots left — early access + your first plant buddy on us
-          </p>
+          <p class="form-note">Early access · Free to join · Help shape the app 🌱</p>
         </div>
       </div>
     </section>
@@ -2126,9 +2058,6 @@
 
   <script>
     'use strict';
-
-    let signupCount = 847;
-    const GOAL = 1000;
 
     (function initHamburger() {
       const btn = document.getElementById('hamburgerBtn');
@@ -2391,25 +2320,6 @@
         if (!res.ok) throw new Error('Network error');
       }
 
-      function updateCounters() {
-        const filled = Math.min(signupCount, GOAL);
-        const pct = (filled / GOAL) * 100;
-        const left = Math.max(GOAL - signupCount, 0);
-
-        const ccountEl = document.getElementById('ccount');
-        const fillEl = document.getElementById('progressFill');
-        const noteEl = document.getElementById('progressNote');
-        const leftEl = document.getElementById('spotsLeft');
-
-        if (ccountEl) ccountEl.textContent = signupCount.toLocaleString();
-        if (fillEl) fillEl.style.width = pct.toFixed(1) + '%';
-        if (leftEl) leftEl.textContent = left > 0 ? left.toLocaleString() : '0';
-
-        if (noteEl && left === 0) {
-          noteEl.innerHTML = '🎉 <strong>Goal reached!</strong> Thanks for the incredible support.';
-        }
-      }
-
       function initWaitlistForm(formId, emailId, okId) {
         const form = document.getElementById(formId);
         const emailEl = document.getElementById(emailId);
@@ -2444,10 +2354,8 @@
 
           try {
             await submitNetlify(form.getAttribute('name'), { email });
-            signupCount++;
             form.hidden = true;
             okEl.classList.add('show');
-            updateCounters();
           } catch {
             errorEl.textContent = 'Something went wrong — please try again.';
             btn.textContent = origText;
@@ -2488,7 +2396,6 @@
         });
       }
 
-      updateCounters();
     })();
 
     (function initReveal() {
