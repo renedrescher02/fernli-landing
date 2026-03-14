@@ -1524,7 +1524,7 @@
             <div class="proof-avatar">🌿</div>
             <div class="proof-avatar">🌵</div>
             <div class="proof-avatar">🌸</div>
-            <div class="proof-avatar">🪴</div>
+            <div class="proof-avatar">🌱</div>
           </div>
           <p class="proof-text">Made for <strong>plant lovers with no clue what they’re doing</strong></p>
         </div>
@@ -1737,7 +1737,7 @@
             tabindex="0"
             data-plant="fiddle"
             data-status="lowlight"
-            data-speech="I need more light... fading 🌥️"
+            data-speech="I need more light... fading ☁️"
             aria-label="Fiddle leaf — needs more light"
           >
             <div class="speech" aria-hidden="true"></div>
@@ -2150,12 +2150,12 @@
 
           const temp = Math.round(wx.current.temperature_2m);
           const code = wx.current.weathercode;
-          const emoji = code === 0 ? '☀️' : code <= 3 ? '⛅' : code <= 67 ? '🌧️' : '🌤️';
+          const emoji = code === 0 ? '☀️' : code <= 3 ? '⛅' : code <= 67 ? '☔' : '⛅';
           const advice = getWaterAdvice(code, temp);
 
           weatherLine.textContent = `${emoji} ${city} · ${temp}°C · ${advice}`;
         } catch {
-          weatherLine.textContent = '🌤️ Check weather in your city';
+          weatherLine.textContent = '⛅ Check weather in your city';
         }
       }
 
