@@ -797,6 +797,14 @@
       opacity: 1;
       transform: translateX(-50%) scale(1);
     }
+    @media (hover: none) and (pointer: coarse) {
+      .speech {
+        white-space: normal;
+        max-width: 130px;
+        text-align: center;
+        line-height: 1.4;
+      }
+    }
 
     .tw-cursor {
       display: inline-block;
@@ -2182,6 +2190,9 @@
         };
       }
 
+      const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+      let activeChar = null;
+
       document.querySelectorAll('.plant-char').forEach(el => {
         const speechEl = el.querySelector('.speech');
         let cancelTyping = null;
@@ -2190,6 +2201,7 @@
         function showSpeech() {
           if (isVisible) return;
           isVisible = true;
+          el.classList.add('touched');
           if (cancelTyping) cancelTyping();
           const text = el.dataset.speech || '';
           speechEl.classList.add('visible');
@@ -2199,6 +2211,7 @@
         function hideSpeech() {
           if (!isVisible) return;
           isVisible = false;
+          el.classList.remove('touched');
           if (cancelTyping) {
             cancelTyping();
             cancelTyping = null;
@@ -2209,19 +2222,30 @@
           }, 200);
         }
 
-        el.addEventListener('mouseenter', showSpeech);
-        el.addEventListener('mouseleave', hideSpeech);
+        // expose for external close
+        el._hideSpeech = hideSpeech;
 
-        el.addEventListener('click', () => {
-          document.querySelectorAll('.plant-char').forEach(other => {
-            if (other !== el) {
-              const otherSpeech = other.querySelector('.speech');
-              otherSpeech.classList.remove('visible');
-              otherSpeech.textContent = '';
+        if (!isTouch) {
+          // Desktop: hover interaction only
+          el.addEventListener('mouseenter', showSpeech);
+          el.addEventListener('mouseleave', hideSpeech);
+        } else {
+          // Touch: tap to open/close, no hover events involved
+          el.addEventListener('click', e => {
+            e.stopPropagation();
+            if (activeChar && activeChar !== el) {
+              activeChar._hideSpeech();
+              activeChar = null;
+            }
+            if (isVisible) {
+              hideSpeech();
+              activeChar = null;
+            } else {
+              showSpeech();
+              activeChar = el;
             }
           });
-          isVisible ? hideSpeech() : showSpeech();
-        });
+        }
 
         el.addEventListener('keydown', e => {
           if (e.key === 'Enter' || e.key === ' ') {
@@ -2231,6 +2255,16 @@
           if (e.key === 'Escape') hideSpeech();
         });
       });
+
+      // Touch: tap outside any character closes the active bubble
+      if (isTouch) {
+        document.addEventListener('click', () => {
+          if (activeChar) {
+            activeChar._hideSpeech();
+            activeChar = null;
+          }
+        });
+      }
     })();
 
     (function initMonsteraStory() {
