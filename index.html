@@ -608,6 +608,14 @@
     }
     .success-msg.show { display: flex; }
 
+    .form-pretitle {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
     .form-note {
       margin-top: 9px;
       font-size: 0.73rem;
@@ -1782,6 +1790,7 @@
       </div>
 
         <div class="signup-compact">
+          <p class="form-pretitle">Be the first to try Fernli</p>
           <label for="heroEmail" class="sr-only">Email address for early access</label>
           <form class="signup-form" id="heroForm" name="waitlist-hero" method="POST" data-netlify="true" novalidate>
             <input type="hidden" name="form-name" value="waitlist-hero" />
@@ -1793,7 +1802,7 @@
               required
               autocomplete="email"
             />
-            <button type="submit">Turn your plant into a buddy →</button>
+            <button type="submit">Get early access →</button>
           </form>
           <div id="heroOk" class="success-msg" role="status" aria-live="polite">🌱 You’re on the list!</div>
           <p class="form-note">
