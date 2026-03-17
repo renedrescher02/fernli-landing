@@ -403,6 +403,14 @@
       justify-content: center;
       margin: 2px 0 4px;
     }
+    @keyframes buddySway {
+      0%, 100% { transform: rotate(-1.2deg); }
+      50%       { transform: rotate( 1.2deg); }
+    }
+    .phone-plant-fig svg {
+      animation: buddySway 5s ease-in-out infinite;
+      transform-origin: center bottom;
+    }
     .phone-plant-card {
       background: rgba(92, 184, 92, 0.1);
       border: 1px solid rgba(92, 184, 92, 0.22);
